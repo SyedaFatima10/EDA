@@ -1,0 +1,61 @@
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Title
+st.title("📊 Exploratory Data Analysis (EDA) App")
+
+# Upload dataset
+uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
+
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    
+    # First 5 rows
+    st.subheader("🔹 First 5 Rows")
+    st.write(df.head())
+
+    # Summary statistics
+    st.subheader("🔹 Summary Statistics")
+    st.write(df.describe())
+
+    # Missing values
+    st.subheader("🔹 Missing Values")
+    st.write(df.isnull().sum())
+
+    # Correlation heatmap
+    st.subheader("🔹 Correlation Heatmap")
+    plt.figure(figsize=(8,5))
+    sns.heatmap(df.corr(), annot=True, cmap="coolwarm")
+    st.pyplot(plt)
+
+    # Histogram
+    st.subheader("🔹 Histogram")
+    hist_col = st.selectbox("Select column for histogram", df.select_dtypes(include='number').columns)
+    plt.figure(figsize=(8,5))
+    sns.histplot(df[hist_col], kde=True, bins=30)
+    st.pyplot(plt)
+
+    # Scatter plot
+    st.subheader("🔹 Scatter Plot")
+    x_axis = st.selectbox("Select X-axis", df.select_dtypes(include='number').columns)
+    y_axis = st.selectbox("Select Y-axis", df.select_dtypes(include='number').columns)
+    plt.figure(figsize=(8,5))
+    sns.scatterplot(x=df[x_axis], y=df[y_axis])
+    st.pyplot(plt)
+
+    # Violin plot
+    st.subheader("🔹 Violin Plot")
+    num_col = st.selectbox("Select numeric column", df.select_dtypes(include='number').columns)
+    cat_col = st.selectbox("Select categorical column", df.select_dtypes(include='object').columns)
+    plt.figure(figsize=(8,5))
+    sns.violinplot(x=df[cat_col], y=df[num_col])
+    st.pyplot(plt)
+
+    # Boxplot
+    st.subheader("🔹 Boxplot")
+    num_col_box = st.selectbox("Select numeric column for boxplot", df.select_dtypes(include='number').columns)
+    plt.figure(figsize=(8,5))
+    sns.boxplot(x=df[num_col_box])
+    st.pyplot(plt)
