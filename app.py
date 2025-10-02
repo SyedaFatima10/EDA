@@ -15,7 +15,7 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
     # Data preview
-    st.subheader("🔍 Data Preview (.head())")
+    st.subheader("🔍 Data.head()")
     st.dataframe(df.head())
 
     # Data shape
@@ -27,7 +27,7 @@ if uploaded_file is not None:
     st.write(df.columns.tolist())
 
     # Summary statistics
-    st.subheader("📊 Summary Statistics (.describe())")
+    st.subheader("📊 Summary Statistics")
     st.write(df.describe())
 
     # Missing values
