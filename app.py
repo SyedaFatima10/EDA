@@ -3,64 +3,50 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Set Streamlit page configuration
+st.set_page_config(page_title="EDA Dashboard", layout="wide")
+
 # Title
-st.title("📊 Exploratory Data Analysis (EDA) App")
+st.title("📈 Exploratory Data Analysis App")
 
-# Upload dataset
-uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
-
+# Upload CSV
+uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
-    
-    # First 5 rows
-    st.subheader("🔹 First 5 Rows")
-    st.write(df.head())
 
-    # Summary statistics
-    st.subheader("🔹 Summary Statistics")
+    # Show basic info
+    st.subheader("🔍 Data Preview")
+    st.dataframe(df.head())
+
+    st.subheader("📐 Data Shape")
+    st.write(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
+
+    st.subheader("🧮 Summary Statistics")
     st.write(df.describe())
 
-    # Missing values
-    st.subheader("🔹 Missing Values")
+    st.subheader("🧼 Missing Values")
     st.write(df.isnull().sum())
 
     # Correlation heatmap
-    st.subheader("🔹 Correlation Heatmap")
-    plt.figure(figsize=(8,5))
-    sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm")
-    st.pyplot(plt)
-    plt.clf()
+    st.subheader("📊 Correlation Heatmap")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm", ax=ax)
+    st.pyplot(fig)
 
     # Histogram
-    st.subheader("🔹 Histogram")
-    hist_col = st.selectbox("Select column for histogram", df.select_dtypes(include=['float64','int64']).columns)
-    plt.figure(figsize=(8,5))
-    sns.histplot(df[hist_col], kde=True, bins=30)
-    st.pyplot(plt)
-    plt.clf()
+    st.subheader("📉 Histogram")
+    num_col = st.selectbox("Select a numeric column", df.select_dtypes(include='number').columns)
+    fig, ax = plt.subplots()
+    sns.histplot(df[num_col], kde=True, ax=ax)
+    st.pyplot(fig)
 
     # Scatter plot
-    st.subheader("🔹 Scatter Plot")
-    x_axis = st.selectbox("Select X-axis", df.select_dtypes(include=['float64','int64']).columns)
-    y_axis = st.selectbox("Select Y-axis", df.select_dtypes(include=['float64','int64']).columns)
-    plt.figure(figsize=(8,5))
-    sns.scatterplot(x=df[x_axis], y=df[y_axis])
-    st.pyplot(plt)
-    plt.clf()
+    st.subheader("📌 Scatter Plot")
+    col1 = st.selectbox("X-axis", df.select_dtypes(include='number').columns, key="x")
+    col2 = st.selectbox("Y-axis", df.select_dtypes(include='number').columns, key="y")
+    fig, ax = plt.subplots()
+    sns.scatterplot(x=df[col1], y=df[col2], ax=ax)
+    st.pyplot(fig)
 
-    # Violin plot
-    st.subheader("🔹 Violin Plot")
-    num_col = st.selectbox("Select numeric column", df.select_dtypes(include=['float64','int64']).columns)
-    cat_col = st.selectbox("Select categorical column", df.select_dtypes(include=['object']).columns)
-    plt.figure(figsize=(8,5))
-    sns.violinplot(x=df[cat_col], y=df[num_col])
-    st.pyplot(plt)
-    plt.clf()
-
-    # Boxplot
-    st.subheader("🔹 Boxplot")
-    num_col_box = st.selectbox("Select numeric column for boxplot", df.select_dtypes(include=['float64','int64']).columns)
-    plt.figure(figsize=(8,5))
-    sns.boxplot(y=df[num_col_box])
-    st.pyplot(plt)
-    plt.clf() 
+else:
+    st.info("Please upload a CSV file to begin your analysis.")
