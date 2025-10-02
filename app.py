@@ -2,13 +2,12 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import io
 
 # Streamlit page config
 st.set_page_config(page_title="EDA Dashboard", layout="wide")
 
 # Title
-st.title("📊 Enhanced Exploratory Data Analysis App")
+st.title("📊 Exploratory Data Analysis App")
 
 # Upload CSV
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
@@ -26,12 +25,6 @@ if uploaded_file is not None:
     # Column names
     st.subheader("🧾 Column Names")
     st.write(df.columns.tolist())
-
-    # Data info
-    st.subheader("ℹ️ Data Info (.info())")
-    buffer = io.StringIO()
-    df.info(buf=buffer)
-    st.text(buffer.getvalue())
 
     # Summary statistics
     st.subheader("📊 Summary Statistics (.describe())")
