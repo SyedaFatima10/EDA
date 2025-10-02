@@ -12,19 +12,6 @@ uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     
-    # Dataset Shape
-    st.subheader("🔹 Dataset Shape")
-    st.write(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
-
-    # Dataset Info (without io)
-    st.subheader("🔹 Dataset Info")
-    info_df = pd.DataFrame({
-        "Column": df.columns,
-        "Non-Null Count": df.count().values,
-        "Dtype": df.dtypes.values
-    })
-    st.write(info_df)
-
     # First 5 rows
     st.subheader("🔹 First 5 Rows")
     st.write(df.head())
@@ -76,4 +63,4 @@ if uploaded_file is not None:
     plt.figure(figsize=(8,5))
     sns.boxplot(y=df[num_col_box])
     st.pyplot(plt)
-    plt.clf()
+    plt.clf() 
