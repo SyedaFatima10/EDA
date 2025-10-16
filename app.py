@@ -1,7 +1,9 @@
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+streamlit
+pandas
+matplotlib
+seaborn
+openpyxl
+
 
 # ✅ Streamlit page configuration
 st.set_page_config(page_title="EDA Dashboard", layout="wide")
